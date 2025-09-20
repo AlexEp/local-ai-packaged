@@ -1,0 +1,135 @@
+{
+  "name": "DorothyAssistant",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        -80
+      ],
+      "id": "219a0203-8fa5-4d4b-ab04-f0a9262aaf69",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39c2f302-03be-4464-a17a-d7cc481d6d44",
+              "name": "=response",
+              "value": "=COOOLLL!!!",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "27008cd7-e8e3-4b46-b2d3-847b0088b5dc",
+      "name": "Success",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        420,
+        -100
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "service"
+      },
+      "type": "n8n-nodes-base.homeAssistant",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -280
+      ],
+      "id": "5131f9fc-94dd-4306-8fef-c97c8f0963a4",
+      "name": "Home Assistant",
+      "credentials": {
+        "homeAssistantApi": {
+          "id": "9M9viMTRboriUD8y",
+          "name": "Home Assistant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://192.168.1.41:8123/api/conversation/process",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"agent_id\": \"conversation.chatgpt\",\n  \"text\": \"{{$json.query}}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        -240
+      ],
+      "id": "e2769324-530f-4eed-aba4-81d9028105f2",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "HIpFbF572Tk88Ecy",
+          "name": "Header Auth account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Home Assistant": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "640aa5ab-61cd-4cde-bebf-c4d5ace20f51",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4f0e3c1b7b57937150070e2e4d3e8ab9a656d26db458c842c4661a307f2c191e"
+  },
+  "id": "NveMEunnyVJo3j7a",
+  "tags": [
+    {
+      "createdAt": "2025-03-22T17:14:09.657Z",
+      "updatedAt": "2025-03-22T17:14:09.657Z",
+      "id": "c1AlW5frIaOxTcTZ",
+      "name": "Active"
+    }
+  ]
+}
