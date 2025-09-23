@@ -376,24 +376,7 @@ services:
     environment:
       - SYNAPSE_SERVER_NAME=${SYNAPSE_SERVER_NAME:-localhost}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    command:
-      - "sh"
-      - "-c"
-      - |
-        set -e
-        if [ -f "/data/homeserver.yaml" ]; then
-            echo "homeserver.yaml already exists, skipping generation."
-            exit 0
-        fi
-        if [ -z "$SYNAPSE_SERVER_NAME" ]; then
-            echo "SYNAPSE_SERVER_NAME is not set. Please set it in your .env file."
-            exit 1
-        fi
-        /start.py generate
-        sed -i 's/name: sqlite3/name: psycopg2/g' /data/homeserver.yaml
-        sed -i "s|database: /data/homeserver.db|database: postgres\n    user: postgres\n    password: '\${POSTGRES_PASSWORD}'\n    host: postgres|g" /data/homeserver.yaml
-        sed -i 's/enable_registration: false/enable_registration: true/g' /data/homeserver.yaml
-
+    command: ["sleep", "3600"]
   synapse:
     image: matrixdotorg/synapse:latest
     container_name: synapse
@@ -473,5 +456,4 @@ services:
 networks:
   n1-shared-network:
     external: true
-  localai_default:
-    external: true  
+  localai_default:  
