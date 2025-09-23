@@ -56,6 +56,8 @@ results from up to 229 search services. Users are neither tracked nor profiled, 
 
 ✅ [**Langfuse**](https://langfuse.com/) - Open source LLM engineering platform for agent observability
 
+✅ [**Element**](https://element.io/) - A secure, self-hosted chat client for the Matrix protocol. See the [Element README](./element/README.md) for more details.
+
 ## Prerequisites
 
 Before you begin, make sure you have the following software installed:
@@ -126,6 +128,7 @@ Before running the services, you need to set up your environment variables for S
    OLLAMA_HOSTNAME=:ollama.yourdomain.com
    SEARXNG_HOSTNAME=searxng.yourdomain.com
    NEO4J_HOSTNAME=neo4j.yourdomain.com
+   ELEMENT_HOSTNAME=element.yourdomain.com
    LETSENCRYPT_EMAIL=your-email-address
    ```   
 

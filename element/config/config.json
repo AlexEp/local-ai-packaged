@@ -1,0 +1,17 @@
+{
+    "default_server_config": {
+        "m.homeserver": {
+            "base_url": "https://synapse:8448",
+            "server_name": "synapse"
+        }
+    },
+    "brand": "Element",
+    "integrations_ui_url": "https://scalar.vector.im/",
+    "integrations_rest_url": "https://scalar.vector.im/api",
+    "integrations_widgets_urls": [
+        "https://scalar.vector.im/api"
+    ],
+    "hosting_signup_link": "https://element.io/matrix-hosting",
+    "bug_report_endpoint_url": "https://element.io/bugreports/submit",
+    "show_labs_flags": false
+}
