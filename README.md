@@ -405,3 +405,11 @@ interact with the local filesystem.
 
 This project (originally created by the n8n team, link at the top of the README) is licensed under the Apache License 2.0 - see the
 [LICENSE](LICENSE) file for details.
+
+
+## Else (Alex)
+
+1. for Telegram : 
+add "WEBHOOK_URL"
+
+2. 
