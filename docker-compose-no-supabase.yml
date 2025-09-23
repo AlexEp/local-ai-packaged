@@ -390,14 +390,31 @@ services:
             exit 1
         fi
         /start.py generate
-        # Use a series of simple, portable sed commands to build the database config
-        # This is more robust than a single, complex multi-line replacement.
+
+        # Create a temporary file with the new database configuration using a here-document.
+        # This is the most robust way to handle multi-line text and special characters.
+        cat > /data/db_config.yml <<EOF
+  args:
+    user: postgres
+    password: '\${POSTGRES_PASSWORD}'
+    database: postgres
+    host: postgres
+EOF
+
+        # Change the database type first.
         sed -i 's/name: sqlite3/name: psycopg2/g' /data/homeserver.yaml
-        sed -i "s|    database: /data/homeserver.db|    host: postgres|g" /data/homeserver.yaml
-        sed -i "/    host: postgres/i \    database: postgres" /data/homeserver.yaml
-        sed -i "/    database: postgres/i \    password: '\${POSTGRES_PASSWORD}'" /data/homeserver.yaml
-        sed -i "/    password: '\${POSTGRES_PASSWORD}'/i \    user: postgres" /data/homeserver.yaml
+
+        # Use sed to delete the old database args block.
+        sed -i '/  args:/,+1d' /data/homeserver.yaml
+
+        # Use sed to read the new config from the file and insert it after the database name.
+        sed -i '/  name: psycopg2/r /data/db_config.yml' /data/homeserver.yaml
+
+        # Enable registration.
         sed -i 's/enable_registration: false/enable_registration: true/g' /data/homeserver.yaml
+
+        # Clean up the temporary file.
+        rm /data/db_config.yml
 
   synapse:
     image: matrixdotorg/synapse:latest
