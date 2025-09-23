@@ -391,7 +391,7 @@ services:
         fi
         /start.py generate
         sed -i 's/name: sqlite3/name: psycopg2/g' /data/homeserver.yaml
-        sed -i "s|database: /data/homeserver.db|database: postgres\n    user: postgres\n    password: $POSTGRES_PASSWORD\n    host: postgres|g" /data/homeserver.yaml
+        sed -i "s|database: /data/homeserver.db|database: postgres\n    user: postgres\n    password: '\${POSTGRES_PASSWORD}'\n    host: postgres|g" /data/homeserver.yaml
         sed -i 's/enable_registration: false/enable_registration: true/g' /data/homeserver.yaml
 
   synapse:
@@ -405,6 +405,8 @@ services:
       - "8008:8008"
     volumes:
       - ./synapse:/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     depends_on:
       postgres:
         condition: service_healthy
