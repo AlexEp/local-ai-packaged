@@ -11,6 +11,7 @@ volumes:
   langfuse_clickhouse_data:
   langfuse_clickhouse_logs:
   langfuse_minio_data:
+  synapse-data:
 
 x-n8n: &service-n8n
   image: n8nio/n8n:latest
@@ -366,6 +367,47 @@ services:
       options:
         max-size: "1m"
         max-file: "1"
+
+  synapse-config-generator:
+    image: matrixdotorg/synapse:latest
+    container_name: synapse-config-generator
+    volumes:
+      - ./synapse:/data
+      - ./generate-synapse-config.sh:/generate-synapse-config.sh
+    environment:
+      - SYNAPSE_SERVER_NAME=${SYNAPSE_SERVER_NAME:-localhost}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    command: ["sh", "/generate-synapse-config.sh"]
+
+  synapse:
+    image: matrixdotorg/synapse:latest
+    container_name: synapse
+    restart: unless-stopped
+    expose:
+      - 8008/tcp
+      - 8448/tcp
+    ports:
+      - "8008:8008"
+    volumes:
+      - ./synapse:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      synapse-config-generator:
+        condition: service_completed_successfully
+
+  element:
+    image: vectorim/element-web:latest
+    container_name: element
+    restart: unless-stopped
+    expose:
+      - 80/tcp
+    ports:
+      - "8080:80"
+    volumes:
+      - ./element-config.json:/app/config.json
+    depends_on:
+      - synapse
 
   ollama-cpu:
     profiles: ["cpu"]
