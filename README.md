@@ -413,3 +413,55 @@ This project (originally created by the n8n team, link at the top of the README)
 add "WEBHOOK_URL"
 
 2. 
+
+---
+
+## Local Matrix/Element Setup
+
+This document describes how to set up a local Matrix homeserver (Synapse) and an Element web client using Docker Compose.
+
+### Prerequisites
+
+Before you begin, you will need to have Docker and Docker Compose installed on your system.
+
+### Configuration
+
+Before starting the services, you need to configure the Synapse homeserver.
+
+1.  **Set the server name**. Add the following line to your `.env` file, replacing `your.domain.name` with your desired server name. For local development, you can use `localhost`.
+
+    ```
+    SYNAPSE_SERVER_NAME=your.domain.name
+    ```
+
+2.  **Create a directory for Synapse's data.**
+
+    ```bash
+    mkdir synapse
+    ```
+
+### Running the services
+
+Once you have configured Synapse, you can start all the services using Docker Compose:
+
+```bash
+docker-compose -f docker-compose-no-supabase.yml up -d
+```
+
+The first time you start the services, a `homeserver.yaml` file will be generated in the `synapse` directory. This file is configured to use the existing PostgreSQL database and has registration enabled by default.
+
+### Creating a user
+
+You can create a new user by navigating to the Element web client and clicking on "Create Account".
+
+Alternatively, you can create a user from the command line:
+
+```bash
+docker exec -it synapse register_new_matrix_user http://localhost:8008 -c /data/homeserver.yaml -a -u <username> -p <password>
+```
+
+Replace `<username>` and `<password>` with the desired username and password.
+
+### Accessing Element
+
+Once the services are running, you can access the Element web client by navigating to `http://localhost:8080` in your web browser. You can then log in with the user you created in the previous step. Note that you may need to specify the homeserver URL manually, which is `http://localhost:8008`.
