@@ -391,23 +391,22 @@ services:
         fi
         /start.py generate
 
-        # Create a temporary file with the new database configuration using a here-document.
-        # This is the most robust way to handle multi-line text and special characters.
-        cat > /data/db_config.yml <<EOF
-  args:
-    user: postgres
-    password: '\${POSTGRES_PASSWORD}'
-    database: postgres
-    host: postgres
-EOF
+        # Use a series of echo commands to create the database configuration snippet.
+        # This is the most robust method and avoids all issues with here-docs,
+        # newlines, and special characters in sed.
+        echo "  args:" > /data/db_config.yml
+        echo "    user: postgres" >> /data/db_config.yml
+        echo "    password: '\${POSTGRES_PASSWORD}'" >> /data/db_config.yml
+        echo "    database: postgres" >> /data/db_config.yml
+        echo "    host: postgres" >> /data/db_config.yml
 
-        # Change the database type first.
+        # Change the database type.
         sed -i 's/name: sqlite3/name: psycopg2/g' /data/homeserver.yaml
 
-        # Use sed to delete the old database args block.
+        # Delete the old database args block.
         sed -i '/  args:/,+1d' /data/homeserver.yaml
 
-        # Use sed to read the new config from the file and insert it after the database name.
+        # Read the new config from the file and insert it after the database name.
         sed -i '/  name: psycopg2/r /data/db_config.yml' /data/homeserver.yaml
 
         # Enable registration.
