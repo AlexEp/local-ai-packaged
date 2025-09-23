@@ -1,0 +1,15 @@
+services:
+  element-web:
+    image: vectorim/element-web:latest
+    container_name: element-web
+    restart: unless-stopped
+    volumes:
+      - ./config/config.json:/app/config.json
+    networks:
+      - n1-shared-network
+    expose:
+      - 80
+
+networks:
+  n1-shared-network:
+    external: true
