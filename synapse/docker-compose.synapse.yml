@@ -1,0 +1,36 @@
+version: '3.8'
+
+volumes:
+  synapse_data:
+  synapse_db_data:
+
+services:
+  synapse:
+    image: matrixdotorg/synapse:latest
+    container_name: synapse
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    depends_on:
+      - synapse-db
+    networks:
+      - n1-shared-network
+    expose:
+      - 8008
+
+  synapse-db:
+    image: postgres:15-alpine
+    container_name: synapse-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${SYNAPSE_DB_USER}
+      - POSTGRES_PASSWORD=${SYNAPSE_DB_PASSWORD}
+      - POSTGRES_DB=${SYNAPSE_DB_NAME}
+    volumes:
+      - synapse_db_data:/var/lib/postgresql/data
+    networks:
+      - n1-shared-network
+
+networks:
+  n1-shared-network:
+    external: true

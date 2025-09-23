@@ -56,6 +56,8 @@ results from up to 229 search services. Users are neither tracked nor profiled, 
 
 ✅ [**Langfuse**](https://langfuse.com/) - Open source LLM engineering platform for agent observability
 
+✅ [**Synapse**](https://matrix.org/docs/projects/server/synapse) - A Matrix homeserver implementation, required for Element. See the [Synapse README](./synapse/README.md) for setup instructions.
+
 ✅ [**Element**](https://element.io/) - A secure, self-hosted chat client for the Matrix protocol. See the [Element README](./element/README.md) for more details.
 
 ## Prerequisites
@@ -129,6 +131,7 @@ Before running the services, you need to set up your environment variables for S
    SEARXNG_HOSTNAME=searxng.yourdomain.com
    NEO4J_HOSTNAME=neo4j.yourdomain.com
    ELEMENT_HOSTNAME=element.yourdomain.com
+   SYNAPSE_HOSTNAME=synapse.yourdomain.com
    LETSENCRYPT_EMAIL=your-email-address
    ```   
 

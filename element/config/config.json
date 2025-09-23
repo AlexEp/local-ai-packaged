@@ -1,8 +1,8 @@
 {
     "default_server_config": {
         "m.homeserver": {
-            "base_url": "https://synapse:8448",
-            "server_name": "synapse"
+            "base_url": "https://synapse.localhost",
+            "server_name": "synapse.localhost"
         }
     },
     "brand": "Element",

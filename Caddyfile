@@ -40,6 +40,16 @@
     reverse_proxy neo4j:7474
 }
 
+# Element
+{$ELEMENT_HOSTNAME} {
+    reverse_proxy element-web:80
+}
+
+# Synapse
+{$SYNAPSE_HOSTNAME} {
+    reverse_proxy synapse:8008
+}
+
 import /etc/caddy/addons/*.conf
 
 # # SearXNG

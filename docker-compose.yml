@@ -1,6 +1,7 @@
 include:
   - ./supabase/docker/docker-compose.yml
   - ./element/docker-compose.element.yml
+  - ./synapse/docker-compose.synapse.yml
 
 volumes:
   n8n_storage:
@@ -163,6 +164,7 @@ services:
       - LANGFUSE_HOSTNAME=${LANGFUSE_HOSTNAME:-":8007"}
       - NEO4J_HOSTNAME=${NEO4J_HOSTNAME:-":8008"}
       - ELEMENT_HOSTNAME=${ELEMENT_HOSTNAME:-":8009"}
+      - SYNAPSE_HOSTNAME=${SYNAPSE_HOSTNAME:-":8448"}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL:-internal}
     cap_drop:
       - ALL
